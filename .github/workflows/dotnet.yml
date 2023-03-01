@@ -28,7 +28,7 @@ jobs:
         run: dotnet build ./gh-dotnet-webapp.sln --configuration Release --no-restore
         
       - name: Publish Stage
-        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build output '${{ env.AZURE-PACKAGE }}'
+        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build --output '${{ env.AZURE-PACKAGE }}'
         
       - name: Deployment Stage
         uses: azure/webapps-deploy@v2
