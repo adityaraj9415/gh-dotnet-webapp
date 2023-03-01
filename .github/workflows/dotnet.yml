@@ -6,7 +6,11 @@ on:
   push:
     branches:
     - main
-    
+env:
+  AZURE-WEBAPP-NAME: gh-dotnet
+  AZURE-PACKAGE: "./publish"
+
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -24,9 +28,14 @@ jobs:
         run: dotnet build ./gh-dotnet-webapp.sln --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build
+        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build output '${{ env.AZURE-PACKAGE }}'
         
-        
+      - name: Deployment
+        uses: actions/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.AZURE-WEBAPP-NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: ' ${{ env.AZURE-PACKAGE }}'
         
         
         
