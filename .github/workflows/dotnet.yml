@@ -21,16 +21,16 @@ jobs:
         with: 
           dotnet-version: '6.0.x'
           
-      - name: Restore
+      - name: Restore Stage
         run: dotnet restore ./gh-dotnet-webapp.sln
         
-      - name: Build
+      - name: Build Stage
         run: dotnet build ./gh-dotnet-webapp.sln --configuration Release --no-restore
         
-      - name: Publish
+      - name: Publish Stage
         run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build output '${{ env.AZURE-PACKAGE }}'
         
-      - name: Deployment
+      - name: Deployment Stage
         uses: azure/webapp-deploy@v2
         with: 
           app-name: ${{ env.AZURE-WEBAPP-NAME }}
