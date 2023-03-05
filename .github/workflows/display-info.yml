@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
 jobs:
   display-information:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: adityaraj9415/gh-dotnet-webapp/.github/workflows/display-info.yml@master
-      - run: echo "${{ steps.publish.contents }}"
+    uses: adityaraj9415/gh-dotnet-webapp/.github/workflows/display-info.yml@master
+  
       
