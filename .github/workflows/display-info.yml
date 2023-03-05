@@ -1,14 +1,11 @@
 name: Displaying Content based on Previous Workflow File
 
 on: 
-  workflow_run:
-    workflows: ["Publish Dot-Net-Web-App 🚀"]
-    types:
-      completed
+  workflow_dispatch:
 jobs:
   display-information:
     runs-on: ubuntu-latest
     steps:
-      - name: Workflow Run ID
+      - uses: adityaraj9415/gh-dotnet-webapp/.github/workflows/display-info.yml@master
+      - run: echo "${{ steps.publish.contents }}"
       
-        run: echo "Workflow run:$GITHUB_CONTEXT"
