@@ -1,0 +1,14 @@
+name: Displaying Content based on Previous Workflow File
+
+on: 
+  workflow_run:
+    workflows: ["Publish Dot-Net-Web-App 🚀"]
+    types:
+      completed
+jobs:
+  display-information:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow Run ID
+      
+        run: echo 'Workflow run:${github.context}'
