@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Workflow Run ID
       
-        run: echo 'Workflow run:${github.context}'
+        run: echo "Workflow run:$GITHUB_CONTEXT"
