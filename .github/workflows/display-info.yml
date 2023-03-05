@@ -8,6 +8,7 @@ on:
 jobs:
   display-information:
     runs-on: ubuntu-latest
+    needs: ${{ publish }}
     steps:
       - name: Workflow Run ID
       
