@@ -1,9 +1,14 @@
 name: Displaying Content based on Previous Workflow File
 
 on: 
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Publish Dot-Net-Web-App 🚀]
+    types:
+      - completed
 jobs:
   display-information:
-    uses: adityaraj9415/gh-dotnet-webapp/.github/workflows/display-info.yml@master
-  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo " ${{ github.event.description }}"
       
