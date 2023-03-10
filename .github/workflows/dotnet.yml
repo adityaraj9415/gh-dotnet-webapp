@@ -12,8 +12,12 @@ env:
 
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gh-dotnet-webapp
+        
     steps:
       - uses: actions/checkout@v3
       - name: Setup .net
@@ -21,21 +25,48 @@ jobs:
         with: 
           dotnet-version: '6.0.x'
           
-      - name: Restore Stage
-        run: dotnet restore ./gh-dotnet-webapp.sln
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
         
       - name: Build Stage
-        run: dotnet build ./gh-dotnet-webapp.sln --configuration Release --no-restore
+        run: dotnet build ./gh-dotnet-webapp.sln --configuration Release 
         
       - name: Publish Stage
-        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --no-build --output '${{ env.AZURE-PACKAGE }}'
-        
-      - name: Deployment Stage
-        uses: azure/webapps-deploy@v2
+        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --output '${{ env.AZURE-PACKAGE }}'
+      - name: Upload Artifacts for next Stage  
+        uses: actions/upload-artifact@v3
         with: 
+          name: .net-app
+          path: ${{ env.AZURE-PACKAGE }}
+      
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Deployment'
+      url: ${{ steps.deploy-webapp.outputs.webapp-url }}
+      
+    steps:
+      - name: Download artifact from above job
+        uses: actions/download-artifacat@v3
+        with:
+          name: .net-app
+          
+      - name: Deploy to Azure Web Application
+        id: deploy-webapp
+        uses: actions/webapp-deploy@v2
+        with:
+       
           app-name: ${{ env.AZURE-WEBAPP-NAME }}
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: "${{ env.AZURE-PACKAGE }}"
+       
+          
         
         
         
