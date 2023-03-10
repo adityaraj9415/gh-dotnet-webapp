@@ -32,14 +32,12 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Restore Stage
-        run: dotnet restore ./gh-dotnet-webapp.sln
       
       - name: Build Stage
-        run: dotnet build ./gh-dotnet-webapp.sln --configuration Release --no-restore
+        run: dotnet build --configuration Release 
         
       - name: Publish Stage
-        run: dotnet publish ./gh-dotnet-webapp.sln --configuration Release --output '${{ env.AZURE-PACKAGE }}' --no-build
+        run: dotnet publish --configuration Release --output '${{ env.AZURE-PACKAGE }}' 
       - name: Upload Artifacts for next Stage  
         uses: actions/upload-artifact@v3
         with: 
