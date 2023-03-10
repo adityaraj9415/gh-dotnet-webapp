@@ -53,13 +53,13 @@ jobs:
       
     steps:
       - name: Download artifact from above job
-        uses: actions/download-artifacat@v3
+        uses: actions/download-artifact@v3
         with:
           name: .net-app
           
       - name: Deploy to Azure Web Application
         id: deploy-webapp
-        uses: actions/webapp-deploy@v2
+        uses: azure/webapp-deploy@v2
         with:
        
           app-name: ${{ env.AZURE-WEBAPP-NAME }}
